@@ -1,0 +1,35 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: flask-s2i
+  name: flask-s2i
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: flask-s2i:latest
+  postCommit: {}
+  resources: {}
+  source:
+    contextDir: s2i-flask
+    git:
+      uri: https://github.com/martineg/ocp-labs
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: python:3.6
+        namespace: openshift
+    type: Source
+  triggers:
+  - github:
+      secret: IRG_uOuPTPttFA4ujATQ
+    type: GitHub
+  - generic:
+      secret: XFlL928ZPe1C4qSyl3sR
+    type: Generic
+  - type: ConfigChange
+  - imageChange: {}
+    type: ImageChange
